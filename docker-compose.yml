@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  app:
+    image: dhanainweb97/application-deployment:latest
+    container_name: application-deployment
+    ports:
+      - "80:80"
+    restart: unless-stopped
