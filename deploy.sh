@@ -1,11 +1,5 @@
 #!/bin/bash
-
-echo "Starting application deployment..."
+set -e
 
 docker compose down
-
 docker compose up -d
-
-echo "Application deployment completed successfully."
-
-docker ps
