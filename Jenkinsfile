@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_USERNAME = 'dhanainweb97'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -15,14 +11,17 @@ pipeline {
         stage('Set Image') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'dev') {
+                    def branch = env.GIT_BRANCH?.replaceFirst(/^origin\//, '')
+
+                    if (branch == 'dev') {
                         env.DOCKER_IMAGE = 'dhanainweb97/dev:latest'
-                    } else if (env.BRANCH_NAME == 'master') {
+                    } else if (branch == 'master') {
                         env.DOCKER_IMAGE = 'dhanainweb97/prod:latest'
                     } else {
-                        error "Unsupported branch: ${env.BRANCH_NAME}"
+                        error "Unsupported branch: ${branch}"
                     }
 
+                    echo "Branch: ${branch}"
                     echo "Docker image: ${env.DOCKER_IMAGE}"
                 }
             }
