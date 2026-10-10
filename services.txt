@@ -1,0 +1,7 @@
+services:
+  application-deployment:
+    image: ${DOCKER_IMAGE:-dhanainweb97/dev:latest}
+    container_name: application-deployment
+    ports:
+      - "80:80"
+    restart: unless-stopped
