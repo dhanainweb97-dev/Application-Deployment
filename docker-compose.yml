@@ -1,7 +1,7 @@
 services:
-  application-deployment:
-    image: ${DOCKER_IMAGE:-dhanainweb97/dev:latest}
-    container_name: application-deployment
+  application-deployment-prod:
+    image: ${DOCKER_IMAGE:-dhanainweb97/prod:latest}
+    container_name: application-deployment-prod
     ports:
-      - "80:80"
+      - "8081:80"
     restart: unless-stopped
