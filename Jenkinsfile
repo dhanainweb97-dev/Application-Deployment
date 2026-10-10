@@ -1,8 +1,10 @@
+```groovy
 pipeline {
     agent any
 
     environment {
         DOCKER_USERNAME = 'dhanainweb97'
+        DOCKER_IMAGE = 'dhanainweb97/prod:latest'
     }
 
     stages {
@@ -15,14 +17,7 @@ pipeline {
         stage('Set Image') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'dev') {
-                        env.DOCKER_IMAGE = 'dhanainweb97/dev:latest'
-                    } else if (env.BRANCH_NAME == 'master') {
-                        env.DOCKER_IMAGE = 'dhanainweb97/prod:latest'
-                    } else {
-                        error "Unsupported branch: ${env.BRANCH_NAME}"
-                    }
-
+                    echo "Production branch: master"
                     echo "Docker image: ${env.DOCKER_IMAGE}"
                 }
             }
@@ -44,6 +39,7 @@ pipeline {
                     )
                 ]) {
                     sh '''
+                        set -e
                         echo "$DH_PASSWORD" | docker login -u "$DH_USERNAME" --password-stdin
                         docker push "$DOCKER_IMAGE"
                         docker logout
@@ -61,10 +57,11 @@ pipeline {
 
     post {
         success {
-            echo 'Application deployed successfully!'
+            echo 'Production application deployed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check the stage logs.'
+            echo 'Production pipeline failed. Check the stage logs.'
         }
     }
 }
+```
